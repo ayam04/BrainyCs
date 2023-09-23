@@ -2,7 +2,7 @@ import openai
 import os
 from colorama import Fore, Style
 
-class Assesment:
+class Assessment:
     openai.api_key = "API_KEY_HERE"
     openai.organization
 
@@ -17,6 +17,19 @@ class Assesment:
         )
         reply = chat.choices[0].message.content
         return {"role": "assistant", "content": reply}
+    
+    def split_string(string):
+        if "BrainyCounselor: " in string:
+            split_string = string.split("BrainyCounselor: ")
+            return True, split_string[1]
+        if "Assistant: " in string:
+            split_string = string.split("Assistant: ")
+            return True, split_string[1]
+        if "Interviewer: " in string:
+            split_string = string.split("Interviewer: ")
+            return True, split_string[1]
+        else:
+            return False, string
 
     @staticmethod
     def genqs(age,personality):
@@ -50,7 +63,7 @@ class Assesment:
             {"role": "system", "content": prompt},
             {"role":"user", "content": f"""Based on the prompt given to the system RANDOMLY generate 10 interview questions from the 7 unique categories in the format already PROVIDED. Your response MUST BE only the 10 interview questions with labels 1.-10., There should be no other content in your response. DO NOT show the category of the question in the response."""}
         ]
-        response = Assesment.generate_response(messages,0.3)
+        response = Assessment.generate_response(messages,0.3)
         return response['content']
 
     @staticmethod
@@ -97,3 +110,25 @@ class Assesment:
         IMPORTANT:
         NEVER justify your answers. NEVER generate and/or give information not mentioned in the CONTEXT. ALWAYS SPECIFY THE QUESTIONS AS FIRST, SECOND, 1, 2, etc. NEVER END THE INTERVIEW UNTIL ALL QUESTIONS ARE ANSWERED.
         """ 
+        messages = [
+            {"role": "system", "content": prompt},
+            {"role": "user", "content": f"Now respond by ALWAYS starting the interview with the greeting and introduction, DO NOT ask any questions or answer any of the Candidates questions until the candidate responds back properly with how they are doing today, Then begin by asking the first question from the QLIST. When conducting the interview as the Interviewer ALWAYS acknowledge the 12 rules when responding to the candidate." }
+        ]
+
+        while True:
+            try:
+                res = Assessment.generate_response(messages,0)
+                boolean, content = Assessment.split_string(res["content"])
+                messages.append({"role": "assistant", "content": content})
+                print(f"{Fore.BLUE}Interviewer: " + res["content"] + f"{Style.RESET_ALL}")       
+                if "We will get back to you soon regarding the next steps in the hiring process." in content:
+                    break         
+                response = input(f"{Fore.GREEN}Candidate: " +  f"{Style.RESET_ALL}")
+                messages.append({"role": "user", "content": "Candidate Response: " +  f"'''{response}''' \n" })
+            except Exception as e:
+                print("An error occurred:", str(e))
+                break
+        print("End of conversation.")
+        return messages 
+    
+    
