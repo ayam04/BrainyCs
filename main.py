@@ -1,5 +1,4 @@
 import openai
-import os
 from colorama import Fore, Style
 
 transcript=''
