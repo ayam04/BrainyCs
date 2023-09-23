@@ -137,11 +137,26 @@ class Assessment:
         return messages
     
     @staticmethod
-    def displayroadmap(transcript,personality,age):
-        prompt=f"""You are a professional roadmap maker and a career counselor that suggests people """
+    def genroadmap(transcript,personality,age):
+        prompt = f"""You are a professional career counselor that suggests people what career to pursue based on  transcipt provided to you. You are pretty brief with your response and at the same time very helpful with your answers. You take into consideration the age and personality of the candidate too and mould your response on the same. You provide more than 1 career paths with diversity and technicalties take into account for the careers paths.
+        
+        The format that you follow is:
+        1. Name of the 1st career to pursue
+          -> brief description of the career path 
+          -> roadmap of the career path based on the age of the candidate
+          
+        2. Name if the 2nd career to pursue
+          -> brief description of the career path 
+          -> roadmap of the career path based on the age of the candidate
+
+          and so on till the no. career paths that you think are apt for the candidate.
+         
+        """
 
         messages=[
             {"role": "system", "content": prompt},
-            {"role":"user", "content": f"""Based on the data that you've trained on, use this transcript: {transcript} and this personality type and age: {personality} and {age} respectively, write me a roadmap for a career that the candidate shoudl persure in the near future."""}
+            {"role":"user", "content": f"Based on the data that you've trained on, use this transcript: {transcript} and this personality type and age: {personality} and {age} respectively, write me a roadmap for a career that the candidate should persur in the near future."}
         ]
-    
+
+        response=Assessment.generate_response(messages,0)
+        return response['content']
