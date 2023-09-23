@@ -160,3 +160,15 @@ class Assessment:
 
         response=Assessment.generate_response(messages,0)
         return response['content']
+
+print('Please go to the provided link to assess you personality type: https://www.16personalities.com/free-personality-test')
+
+name=str(input('Enter your name: '))
+age=int(input('Enter your age: '))
+personality=str(input('Enter you personality type: '))
+
+
+assessment=Assessment()
+questions=assessment.genqs(age,personality)
+assess=assessment.start(name,age,questions,personality)
+roadmap=assessment.genroadmap(transcript,personality,age)
