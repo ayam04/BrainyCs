@@ -43,7 +43,7 @@ class Assesment:
         7. Communication
         Your ability to communicate effectively is important for the role. You may be asked behavioral questions that fall under this category as well.
         
-        Just the generate the questions and not anything else as we want to avoid asking and displaying the unnecessary things to the candidate.
+        Just the generate the questions and not anything else as we want to avoid asking unnecessary things to the candidate.
 
         """
         messages=[
@@ -51,6 +51,8 @@ class Assesment:
             {"role":"user", "content": f"""Based on the prompt given to the system RANDOMLY generate 10 interview questions from the 7 unique categories in the format already PROVIDED. Your response MUST BE only the 10 interview questions with labels 1.-10., There should be no other content in your response. DO NOT show the category of the question in the response."""}
         ]
         response = Assesment.generate_response(messages,0.3)
+        return response['content']
 
-        @staticmethod
-        def start()
+    @staticmethod
+    def start():
+        hj
