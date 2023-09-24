@@ -4,7 +4,7 @@ from colorama import Fore, Style
 transcript=''
 
 class Assessment:
-    openai.api_key = "API_KEY_HERE"
+    openai.api_key = "YOUR_API_KEY_HERE"
     openai.organization
 
     @staticmethod
