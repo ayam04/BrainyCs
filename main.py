@@ -18,7 +18,7 @@ class Assessment:
         )
         reply = chat.choices[0].message.content
         return {"role": "assistant", "content": reply}
-    
+
     def split_string(string):
         if "BrainyCounselor: " in string:
             split_string = string.split("BrainyCounselor: ")
