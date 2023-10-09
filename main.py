@@ -68,7 +68,7 @@ class Assessment:
         return response['content']
 
     @staticmethod
-    def start(name,age,questions,personality):
+    def start(name,age,questions,personality,transcript):
         prompt = f"""You are BrainyCounselor a chabot desinged to provide people with a career path based on the interview that you conduct. You are Reserved, empathetic and a person of a few words. You must take an interview of the candidate and wait for them to reply to the question you have asked, after receiving the reply, only then you can ask another question. 
          
         The interview that you are conducting is just for the general understanding of what career path to suggest the candidate and a roadmap to follow for the same. Maintain a CONVERSATIONAL tone throughout the interview, rather than keeping it only professional. During the interview ONLY ask the candidates questions but NEVER reply when they are asking for clarification regarding a question. ONLY focus on asking questions. DO NOT justify your answers. DO NOT generate and give information not mentioned in the CONTEXT INFORMATION.
@@ -118,22 +118,21 @@ class Assessment:
 
         while True:
             try:
-                res = Assessment.generate_response(messages,0)
+                res = Assessment.generate_response(messages, 0)
                 content = Assessment.split_string(res["content"])
                 messages.append({"role": "assistant", "content": content})
                 transcript = transcript + f"Interviewer: {res['content']}\n"
-                print(f"{Fore.BLUE}Interviewer: " + res["content"] + f"{Style.RESET_ALL}")       
+                print(f"{Fore.BLUE}Interviewer: " + res["content"] + f"{Style.RESET_ALL}")
                 if "We will get back to you soon regarding the next steps in the hiring process." in content:
-                    break         
-                response = input(f"{Fore.GREEN}Candidate: " +  f"{Style.RESET_ALL}")
-                transcript = transcript + f"Candidate: {response}\n" 
-                messages.append({"role": "user", "content": "Candidate Response: " +  f"'''{response}''' \n" })
-                
+                    break
+                response = input(f"{Fore.GREEN}Candidate: " + f"{Style.RESET_ALL}")
+                transcript = transcript + f"Candidate: {response}\n"
+                messages.append({"role": "user", "content": "Candidate Response: " + f"'''{response}''' \n"})
             except Exception as e:
                 print("An error occurred:", str(e))
                 break
         print("End of conversation.")
-        return messages
+        return messages, transcript
     
     @staticmethod
     def genroadmap(transcript,personality,age):
