@@ -166,7 +166,7 @@ age=int(input('Enter your age: '))
 personality=str(input('Enter you personality type: '))
 
 
-assessment=Assessment()
-questions=assessment.genqs(age,personality)
-assess=assessment.start(name,age,questions,personality)
-roadmap=assessment.genroadmap(transcript,personality,age)
+assessment = Assessment()
+questions = assessment.genqs(age, personality)
+assess, transcript = assessment.start(name, age, questions, personality, transcript)
+roadmap = assessment.genroadmap(transcript, personality, age)
